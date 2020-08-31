@@ -29,13 +29,15 @@
               <a href class="topiclist_title left" :title="item.title">{{item.title}}</a>
             </div>
 
-            <div class="last_time right">1年前</div>
+            <div class="last_time right">{{item.last_reply_at|getTime}}</div>
           </div>
           <!-- 分页 -->
           <el-pagination
+            style="margin:15px 0;text-align:left;"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
+            :page-size="pageSize"
             layout="prev, pager, next"
             :total="1240"
           ></el-pagination>
@@ -43,7 +45,29 @@
       </div>
 
       <!-- sidebar -->
-      <div class="sidebar right">sidebar</div>
+      <div class="sidebar right">
+        <div class="login_box inner">
+          <p>CNode：Node.js专业中文社区</p>
+          <div>
+            您可以
+            <a href>登录</a>或
+            <a href>注册</a>也可以
+            <a href>
+              <span class="login_info">通过GitHub登录</span>
+            </a>
+          </div>
+        </div>
+        <div class="inner">
+          <a href v-for="(i,index) in 3" :key="index">
+            <img src="//static.cnodejs.org/FlajCCXkxZaOsuWp3k0iaiqfrJaS" alt />
+            <div :style="{'height':index==2?'0':'10px'}"></div>
+          </a>
+        </div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -97,6 +121,7 @@ export default {
         params: {
           page: this.currentPage,
           limit: this.pageSize,
+          tab: "",
         },
       });
       console.log(res);
@@ -118,10 +143,34 @@ export default {
     },
   },
   filters: {
+    //   tab 格式化
     getTab(tab) {
       return (tab = "share"
         ? "分享"
         : (tab = "ask" ? "问答" : (tab = "job" ? "招聘" : "精华")));
+    },
+    // time 格式化
+    getTime(value) {
+      var time = new Date() - new Date(value);
+      var years = Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12); //年
+      var month = Math.floor(time / 1000 / 60 / 60 / 24 / 30); //月
+      var days = Math.floor(time / 1000 / 60 / 60 / 24 + 1); //日
+      var hours = Math.floor(time / 1000 / 60 / 60); //时
+      var minutes = Math.floor(time / 1000 / 60); //分
+      var seconds = Math.floor(time / 1000); //秒
+      if (years >= 1) {
+        return (value = years + "年前");
+      } else if (month >= 1) {
+        return (value = month + "个月前");
+      } else if (days >= 1) {
+        return (value = days + "天前");
+      } else if (hours >= 1) {
+        return (value = hours + "小时前");
+      } else if (minutes >= 1) {
+        return (value = minutes + "分钟前");
+      } else {
+        return (value = seconds + "秒前");
+      }
     },
   },
 };
@@ -131,9 +180,10 @@ export default {
   width: 80%;
   /* max-width: 1400px;
   min-width: 320px; */
-  margin: 15px auto;
+  margin: 0 auto;
+  padding: 15px 0;
   min-height: 400px;
-  /* border: 1px solid red; */
+  border: 1px solid red;
   overflow: hidden;
 }
 .left {
@@ -146,7 +196,7 @@ export default {
 .content {
   width: 75%;
   padding: 0;
-  margin-right: 5%;
+  margin-right: 1%;
   background-color: #fff;
   /* border: 1px solid red; */
 }
@@ -250,14 +300,41 @@ a.topiclist_title:visited {
 }
 /* sidebar */
 .sidebar {
-  width: 20%;
+  width: 24%;
   font-size: 14px;
   margin-bottom: 20px;
-  background: green;
+  /* background: green; */
   display: block;
+}
+.login_box {
+  text-align: left;
+}
+.inner {
+  padding: 10px;
+  border-radius: 0 0 3px 3px;
+  background-color: #fff;
+  margin-bottom: 13px;
+}
+.login_info {
+  display: inline-block;
+  padding: 3px 10px;
+  margin: 0;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  letter-spacing: 2px;
+  box-shadow: none;
+  border-radius: 3px;
+  line-height: 2em;
+  vertical-align: middle;
+  color: #fff;
+  background-color: #5bc0de;
 }
 .el-pagination {
   display: block;
+}
+p {
+  margin: 0 0 10px;
 }
 @media screen and (min-width: 320px) and (max-width: 980px) {
   .main {
