@@ -131,5 +131,6 @@ li {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+
 }
 </style>

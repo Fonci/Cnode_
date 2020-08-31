@@ -6,8 +6,8 @@
         <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchValue"></el-input>
       </div>
 
-      <div class="top_right">
-        <el-button type="text" v-for="btn in btns" :key="btn.id" style>{{btn.name}}</el-button>
+      <div class="top_right flex">
+        <span class="btns" v-for="btn in btns" :key="btn.id">{{btn.name}}</span>
       </div>
     </div>
   </div>
@@ -43,24 +43,17 @@ export default {
 
 .main_box {
   height: 100%;
-  width: 70%;
+  width: 80%;
   margin: 0 auto !important;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   justify-content: space-between;
+  padding: 5px 0;
 }
+
 .flex {
   display: flex;
 }
-@media screen and (max-width: 980px) {
-  .flex {
-    flex-wrap: wrap;
-  }
-}
-.main_box > div {
-  height: 100%;
-  margin-top: 20px;
-  /* border: 1px solid green; */
-}
+
 .top_left img {
   width: 160px;
   height: 40px;
@@ -75,11 +68,33 @@ export default {
   height: 26px;
   border-radius: 20px;
 }
-.el-button {
+.el-input__inner {
+  background: #888;
+  border: #888;
+}
+.el-input__inner:hover,
+.el-input__inner:focus {
+  background: #fff;
+  border: #fff;
+}
+.top_right {
+  margin-top: 10px;
+}
+.btns {
   color: #ccc;
   line-height: 25px;
+  cursor: pointer;
+  margin-right: 15px;
 }
-.el-button:hover {
+.btns:hover {
   color: white;
+}
+@media screen and (max-width: 980px) {
+  .flex {
+    flex-wrap: wrap;
+  }
+  .top_right {
+    margin-top: 20px;
+  }
 }
 </style>
