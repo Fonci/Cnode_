@@ -63,7 +63,13 @@
             <div :style="{'height':index==2?'0':'10px'}"></div>
           </a>
         </div>
-        <div class="box"></div>
+        <div class="box">
+          <div class="title">无人回复的话题</div>
+
+          <ul class="inner">
+            <li v-for="(item,index) in 5" :key="index">TNFE-Weekly[第七十周已更新]</li>
+          </ul>
+        </div>
         <div class="box"></div>
         <div class="box"></div>
         <div class="box"></div>
@@ -335,6 +341,24 @@ a.topiclist_title:visited {
 }
 p {
   margin: 0 0 10px;
+}
+.sidebar .box {
+  text-align: left;
+}
+.sidebar .title {
+  color: #51585c;
+  border-radius: 3px 3px 0 0;
+  padding: 10px;
+  background-color: #f6f6f6;
+}
+.inner li {
+  max-width: 270px;
+  font-size: 14px;
+  line-height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #778087;
 }
 @media screen and (min-width: 320px) and (max-width: 980px) {
   .main {
