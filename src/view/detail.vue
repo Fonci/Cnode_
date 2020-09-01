@@ -23,7 +23,7 @@
                   <span style="color: #666;font-weight: 700;">{{item.author.loginname}}</span>
                   <span style="color: #08c;">{{index+1}}楼 • {{item.create_at|getTime}}</span>
                 </p>
-                <p style="font-size:14px;" v-html="item.content"></p>
+                <div class="content_box" style="font-size:14px;" v-html="item.content"></div>
               </div>
             </li>
           </ul>
@@ -89,7 +89,7 @@ export default {
     getData(id) {
       this.$http.get("/topic/" + id).then((res) => {
         if (res.status == 200) {
-          console.log(res.data.data)
+          console.log(res.data.data);
           this.detailData = res.data.data;
           this.replyData = res.data.data.replies;
         }
@@ -208,9 +208,9 @@ img {
   font-style: normal;
   font-weight: bold;
 }
-.markdown-text img{
-  width:100%;
-  height:100%;
+.markdown-text img {
+  width: 100%;
+  height: 100%;
 }
 /* sidebar */
 .sidebar {
@@ -271,6 +271,9 @@ p {
   }
   .sidebar {
     display: none;
+  }
+  .content_box {
+    width: 75%;
   }
 }
 </style>
