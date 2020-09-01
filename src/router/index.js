@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '../view/index'
+import detail from '../view/detail'
 import content from '../components/content'
-import detail from '../components/detail'
+
 
 
 Vue.use(Router)

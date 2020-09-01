@@ -6,10 +6,10 @@
         <!-- tab_group -->
         <div class="tab_group">
           <span
-            :class="index==currentTab?'tab active':'tab'"
+            :class="index==currentTabIndex?'tab active':'tab'"
             v-for="(item,index) in tabs"
             :key="index"
-            @click="clickTab(index)"
+            @click="clickTab(index,item.tab)"
           >{{item.name}}</span>
         </div>
         <!-- inner -->
@@ -24,12 +24,22 @@
                 <span class="count_seperator">/</span>
                 <span class="count_of_visits">{{item.visit_count}}</span>
               </span>
-              <span class="topiclist_tab left">{{item.tab|getTab}}</span>
-              <a href class="topiclist_title left" :title="item.title">{{item.title}}</a>
+              <div
+                style="display:flex;"
+                :class="item.tab==currentTab||item.top||(item.good&&currentTab=='good')?'tabBox':''"
+              >
+                <span class="topiclist_tab left" v-if="item.top">置顶</span>
+                <span class="topiclist_tab left" v-else-if="item.good">精华</span>
+                <span class="topiclist_tab left" v-else>{{item.tab|getTab}}</span>
+                <a
+                  href="javascript:;"
+                  class="topiclist_title left"
+                  :title="item.title"
+                  @click="goDetail(item.id)"
+                >{{item.title}}</a>
+              </div>
             </div>
-
             <div class="last_time right">{{item.last_reply_at|getTime}}</div>
-            <img src alt />
           </div>
           <!-- 分页 -->
           <el-pagination
@@ -50,8 +60,8 @@
           <p>CNode：Node.js专业中文社区</p>
           <div>
             您可以
-            <a href>登录</a>或
-            <a href>注册</a>也可以
+            <a href style="color:#778087;">登录</a>或
+            <a href style="color:#778087;">注册</a>也可以
             <a href>
               <span class="login_info">通过GitHub登录</span>
             </a>
@@ -65,7 +75,6 @@
         </div>
         <div class="box">
           <div class="title">无人回复的话题</div>
-
           <ul class="inner">
             <li v-for="(item,index) in 5" :key="index">TNFE-Weekly[第七十周已更新]</li>
           </ul>
@@ -117,10 +126,11 @@ export default {
   components: {},
   data() {
     return {
-      currentTab: 0,
+      currentTabIndex: 0,
+      currentTab: "",
       tabs: [
         {
-          tab: "all",
+          tab: "",
           name: "全部",
         },
         {
@@ -147,47 +157,61 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.getData();
+      this.getData("");
     });
   },
   methods: {
     //点击tab
-    clickTab(i) {
-      this.currentTab = i;
+    clickTab(i, tab) {
+      this.currentTab = tab;
+      this.currentTabIndex = i;
+      this.currentPage = 1;
+      this.getData(tab);
     },
     // 请求首页数据
-    async getData() {
+    async getData(tab) {
       const { data: res } = await this.$http.get("/topics", {
         params: {
           page: this.currentPage,
           limit: this.pageSize,
-          tab: "",
+          tab: tab,
         },
       });
-      console.log(res);
+      // console.log(res);
       if (res.success) {
         this.showData = res.data;
-        console.log(this.showData);
       }
     },
     // 分页
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
       this.pageSize = val;
       this.getData();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.currentPage = val;
       this.getData();
+    },
+    // 点击标题进入详情页
+    goDetail(id) {
+      this.$router.push({
+        name: "detail",
+        path: "/topic/" + id,
+        params: { id: id },
+      });
     },
   },
   filters: {
     //   tab 格式化
     getTab(tab) {
-      return (tab = "share"
-        ? "分享"
-        : (tab = "ask" ? "问答" : (tab = "job" ? "招聘" : "精华")));
+      if (tab == "share") {
+        return (tab = "分享");
+      } else if (tab == "ask") {
+        return (tab = "问答");
+      } else if (tab == "job") {
+        return (tab = "招聘");
+      } else if (tab == "good") {
+        return (tab = "精华");
+      }
     },
     // time 格式化
     getTime(value) {
@@ -223,7 +247,7 @@ export default {
   margin: 0 auto;
   padding: 15px 0;
   min-height: 400px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   overflow: hidden;
 }
 .left {
@@ -302,6 +326,10 @@ img {
   font-size: 10px;
   color: #b4b4b4;
 }
+.tabBox .topiclist_tab {
+  background: #80bd01;
+  color: white;
+}
 .topiclist_tab {
   background-color: #e5e5e5;
   color: #999;
@@ -311,7 +339,7 @@ img {
   -moz-border-radius: 3px;
   -o-border-radius: 3px;
   font-size: 12px;
-  margin-top: 8px;
+  margin: 8px 10px 0 10px;
 }
 a.topiclist_title {
   color: #333;
@@ -324,7 +352,6 @@ a.topiclist_title {
   font-size: 16px;
   line-height: 30px;
   /* border: 1px solid green; */
-  margin-left: 10px;
 }
 a.topiclist_title:hover {
   text-decoration: underline;
@@ -406,6 +433,14 @@ p {
   }
   .el-pagination {
     display: none;
+  }
+  .cell .count {
+    text-align: left;
+    width: 70px;
+    /* border: 1px solid red; */
+    position: absolute;
+    top: 26px;
+    left: 90px;
   }
 }
 </style>

@@ -29,12 +29,11 @@ body {
   background-color: #e1e1e1;
   font-size: 14px;
 }
-footer{
-  width:100%;
-  height:80px;
+footer {
+  width: 100%;
   background-color: #fff;
-  line-height: 80px;
-  color:#ababab;
-  font-size: 20px;
+  color: #ababab;
+  padding: 10px 0;
+  font-size: 18px;
 }
 </style>

@@ -7,7 +7,7 @@ import axios from 'axios'
 import ElementUI from 'element-ui'; //element-ui
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/reset.css' //reset.css
-import './utils/flexible' //flexible
+// import './utils/flexible' //flexible
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false
