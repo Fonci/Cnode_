@@ -19,7 +19,6 @@
               <div class="avatar_box left">
                 <img :src="item.author.avatar_url" />
               </div>
-
               <span class="count left">
                 <span class="count_of_replies">{{item.reply_count}}</span>
                 <span class="count_seperator">/</span>
@@ -30,6 +29,7 @@
             </div>
 
             <div class="last_time right">{{item.last_reply_at|getTime}}</div>
+            <img src alt />
           </div>
           <!-- 分页 -->
           <el-pagination
@@ -70,9 +70,43 @@
             <li v-for="(item,index) in 5" :key="index">TNFE-Weekly[第七十周已更新]</li>
           </ul>
         </div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
+        <div class="box">
+          <div class="title">
+            积分榜
+            <a href>TOP 100 >></a>
+          </div>
+          <ul class="inner">
+            <li v-for="(item,index) in 10" :key="index">TNFE-Weekly[第七十周已更新]</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="title">友情社区</div>
+          <ul class="inner">
+            <li>
+              <a href>
+                <img
+                  style="width:150px;"
+                  src="//static2.cnodejs.org/public/images/ruby-china-20150529.png"
+                  alt
+                />
+              </a>
+            </li>
+            <div style="height:10px;"></div>
+            <li>
+              <a href>
+                <img
+                  style="width:150px;"
+                  src="//static2.cnodejs.org/public/images/phphub-logo.png"
+                  alt
+                />
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- <div class="box">
+          <div class="title">客户端二维码</div>
+          <img src="" alt="">
+        </div>-->
       </div>
     </div>
   </div>
