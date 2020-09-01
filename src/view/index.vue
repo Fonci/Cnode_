@@ -53,7 +53,6 @@
           ></el-pagination>
         </div>
       </div>
-
       <!-- sidebar -->
       <div class="sidebar right">
         <div class="login_box inner">
