@@ -12,6 +12,22 @@
           </div>
           <article v-html="detailData.content"></article>
         </div>
+        <!-- reply_box -->
+        <div class="reply_box">
+          <div class="title">{{detailData.reply_count}}回复</div>
+          <ul>
+            <li class="reply_list" v-for="(item,index) in replyData" :key="index">
+              <img :src="item.author.avatar_url" alt />
+              <div>
+                <p style="font-size:12px;">
+                  <span style="color: #666;font-weight: 700;">{{item.author.loginname}}</span>
+                  <span style="color: #08c;">{{index+1}}楼 • {{item.create_at|getTime}}</span>
+                </p>
+                <p style="font-size:14px;" v-html="item.content"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
       <!-- right -->
       <div class="sidebar right">
@@ -60,6 +76,7 @@ export default {
           avatar_url: "",
         },
       },
+      replyData: [],
     };
   },
   created() {
@@ -72,8 +89,9 @@ export default {
     getData(id) {
       this.$http.get("/topic/" + id).then((res) => {
         if (res.status == 200) {
+          console.log(res.data.data)
           this.detailData = res.data.data;
-          console.log(this.detailData);
+          this.replyData = res.data.data.replies;
         }
       });
     },
@@ -133,13 +151,35 @@ img {
   width: 75%;
   padding: 0;
   margin-right: 1%;
-  background-color: #fff;
+
   /* border: 1px solid red; */
 }
-.mainContent {
-  width: 90%;
-  margin: 0 auto;
+.mainContent,
+.reply_box {
+  background-color: #fff;
+  /* width: 100%; */
   text-align: left;
+  padding: 1% 1%;
+}
+.reply_box {
+  margin-top: 15px;
+  padding: 0;
+}
+.reply_box .title {
+  color: #51585c;
+  border-radius: 3px 3px 0 0;
+  padding: 10px;
+  background-color: #f6f6f6;
+}
+.reply_list {
+  padding: 8px 10px 15px 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+}
+.reply_list img {
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
 }
 .head {
   width: 100%;
@@ -166,7 +206,11 @@ img {
 }
 .markdown-text strong {
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
+}
+.markdown-text img{
+  width:100%;
+  height:100%;
 }
 /* sidebar */
 .sidebar {
